@@ -38,7 +38,7 @@
     ?>
    <h1 class=>Cadastro de Usuário</h1>
         <div >
-          <form action="clientes.php" method="POST">
+          <form class="form" action="clientes.php" method="POST">
             <div>
               <label for="nome">Nome</label>
                 <input required value="<?php if(isset($nome)) echo $nome;?>" type="text" class="form-control" id="nome" name="nome" placeholder="Informe o nome do cliente" size="60">
