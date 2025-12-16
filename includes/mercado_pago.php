@@ -1,13 +1,7 @@
 <?php
-// /includes/mercado_pago.php
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-// Substitua pelo seu Access Token REAL do Mercado Pago
-define('MP_ACCESS_TOKEN', 'SEU_ACCESS_TOKEN_AQUI'); 
-// URL base do seu sistema (Importante para Webhooks e Retornos)
-define('BASE_URL', 'http://localhost/iftickets'); 
+use MercadoPago\SDK;
 
-// Inicializa o SDK
-MercadoPago\SDK::setAccessToken(MP_ACCESS_TOKEN);
-
+SDK::setAccessToken('APP_USR-6777044867566758-121512-1d636628dfb4647e618230ba2b040111-3067578484');
 ?>

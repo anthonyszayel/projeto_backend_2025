@@ -1,96 +1,76 @@
 <?php
-// /api/criar_pagamento.php
-session_start();
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/mercado_pago.php';
+// Arquivo: pagar_mercadopago.php
+session_start(); // 1. Session start obrigatório
+require 'Conexao.php'; // 2. Chama a Classe
 
-header('Content-Type: application/json');
-
-// 1. **AUTENTICAÇÃO E DADOS**
-// Assumindo que o ID do cliente está na sessão após o login
-$cliente_id = $_SESSION['cliente_id'] ?? null;
-if (!$cliente_id) {
-    http_response_code(401);
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Cliente não autenticado.']);
-    exit;
+// VERIFICAÇÃO DE SEGURANÇA (Session)
+if (!isset($_SESSION['usuario_id'])) {
+    die("Acesso negado! Por favor, faça login (rode o login_simulado.php).");
 }
 
-// Dados simulados da compra (viriam do POST/GET do frontend)
-$dados_compra = [
-    'evento_nome' => $_POST['evento_nome'] ?? 'Evento Teste IF',
-    'setor_id' => (int)($_POST['setor_id'] ?? 1),
-    'lote_id' => (int)($_POST['lote_id'] ?? 1),
-    'quantidade' => (int)($_POST['quantidade'] ?? 1),
-    'preco_unitario' => (float)($_POST['preco_unitario'] ?? 50.00),
-    // Outros campos necessários: valor_bruto, taxa, desconto, total_liquido
-];
-
-$db = Database::getConnection();
+$userId = $_SESSION['usuario_id']; // Pegamos o ID da memória RAM (Session)
+$accessToken = 'APP_USR-6777044867566758-121512-1d636628dfb4647e618230ba2b040111-3067578484'; // ⚠️ COLOQUE SEU TOKEN DO MERCADO PAGO
 
 try {
-    // 2. **CRIAR O REGISTRO DO PEDIDO NO BANCO DE DADOS**
-    
-    // Calcula o total líquido (simplificado para o exemplo)
-    $total_liquido = $dados_compra['quantidade'] * $dados_compra['preco_unitario'];
-    
-    // Inserir na tabela 'pedido' (Status inicial: pendente)
-    $stmt_pedido = $db->prepare("
-        INSERT INTO pedido (cliente_id, canal_venda, setor_id, lote_id, quantidade, valor_bruto, taxa, desconto, total_liquido, status, prazo_expiracao)
-        VALUES (?, 'ecommerce', ?, ?, ?, ?, 0.00, 0.00, ?, 'pendente', DATE_ADD(NOW(), INTERVAL 30 MINUTE))
-    ");
-    $stmt_pedido->execute([
-        $cliente_id, 
-        $dados_compra['setor_id'], 
-        $dados_compra['lote_id'], 
-        $dados_compra['quantidade'], 
-        $total_liquido, 
-        $total_liquido
+    // 3. Usando POO para conectar
+    $conexao = new Conexao();
+    $pdo = $conexao->getConexao();
+
+    // 4. Busca o último pedido PENDENTE deste usuário específico
+    // Regra de Negócio: Não podemos deixar pagar um pedido que não existe ou já foi pago.
+    [cite_start]// [cite: 151-163] Tabela pedido vinculada ao cliente
+    $sql = "SELECT * FROM pedido WHERE cliente_id = :uid AND status = 'pendente' ORDER BY id DESC LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':uid' => $userId]);
+    $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$pedido) {
+        die("<h3>Nenhum pedido pendente encontrado para " . $_SESSION['usuario_nome'] . ".</h3>");
+    }
+
+    // 5. Integração com Mercado Pago (cURL)
+    $dadosPagamento = [
+        "items" => [
+            [
+                "title" => "Ingresso #{$pedido['id']} - Evento IF",
+                "quantity" => 1,
+                "currency_id" => "BRL",
+                "unit_price" => (float)$pedido['total_liquido']
+            ]
+        ],
+        "back_urls" => [
+            "success" => "http://localhost/Projeto_Back_End/projeto_back_end_2025_copia/retorno_pagamento.php?pedido_id=" . $pedido['id'],
+            "failure" => "http://localhost/Projeto_Back_End/projeto_back_end_2025_copia/retorno_pagamento.php?status=falha"
+        ],
+        "auto_return" => "approved",
+        "external_reference" => (string)$pedido['id']
+    ];
+
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api.mercadopago.com/checkout/preferences",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dadosPagamento),
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer $accessToken",
+            "Content-Type: application/json"
+        ],
     ]);
-    $pedido_id = $db->lastInsertId();
 
-    // Inserir na tabela 'pagamento' (Status inicial: pendente)
-    $stmt_pagamento = $db->prepare("
-        INSERT INTO pagamento (pedido_id, metodo, status, valor, taxa)
-        VALUES (?, 'pix', 'pendente', ?, 0.00)
-    ");
-    $stmt_pagamento->execute([$pedido_id, $total_liquido]);
-
-
-    // 3. **CRIAR A PREFERÊNCIA DE PAGAMENTO NO MERCADO PAGO**
-    $preference = new MercadoPago\Preference();
+    $response = curl_exec($curl);
+    curl_close($curl);
     
-    // Item
-    $item = new MercadoPago\Item();
-    $item->title = $dados_compra['evento_nome'] . " (" . $dados_compra['quantidade'] . " unid)";
-    $item->quantity = 1; // A preferência é para o pedido completo
-    $item->unit_price = $total_liquido;
-    $item->currency_id = "BRL";
-    $preference->items = array($item);
+    $mp = json_decode($response, true);
+    $link = $mp['init_point'] ?? '#';
 
-    // URLs de Retorno
-    $preference->back_urls = array(
-        "success" => BASE_URL . "/pages/sucesso.php?pedido_id=" . $pedido_id,
-        "failure" => BASE_URL . "/pages/erro.php?pedido_id=" . $pedido_id,
-        "pending" => BASE_URL . "/pages/pendente.php?pedido_id=" . $pedido_id
-    );
-
-    // Webhook (Notificação) - O mais importante para o status final
-    $preference->notification_url = BASE_URL . "/api/webhook_mercadopago.php?source_topic=payment";
-    
-    // Referência Externa: Nossa chave para ligar o pagamento ao pedido
-    $preference->external_reference = (string)$pedido_id; 
-
-    $preference->save();
-
-    // 4. **RESPOSTA DE SUCESSO**
-    echo json_encode([
-        'status' => 'ok', 
-        'link_pagamento' => $preference->init_point // Link para redirecionar o cliente
-    ]);
+    // Exibição
+    echo "<h2>Olá, {$_SESSION['usuario_nome']}!</h2>";
+    echo "<p>Você tem um pedido pendente no valor de <b>R$ " . number_format($pedido['total_liquido'], 2, ',', '.') . "</b>.</p>";
+    echo "<a href='$link' style='background:#009EE3; color:white; padding:15px; text-decoration:none; border-radius:5px;'>Pagar Agora com Mercado Pago</a>";
 
 } catch (Exception $e) {
-    http_response_code(500);
-    error_log("Erro ao criar pagamento: " . $e->getMessage());
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Erro interno ao processar o pagamento.']);
+    echo "Erro no sistema: " . $e->getMessage();
 }
 ?>
+
