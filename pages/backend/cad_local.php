@@ -1,6 +1,6 @@
 <?php
 include "conecta.php";
-
+/*comentario teste*/
 /* Buscar organizações */
 $orgs = mysqli_query($conn, "SELECT id, nome FROM organizacao");
 
