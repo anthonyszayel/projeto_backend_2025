@@ -30,8 +30,9 @@ class GeradorDeIngressos {
         ");
         
         for ($i = 0; $i < $quantidade; $i++) {
-            // 2. Gerar Token Único que ainda vamos ver como criar.
-
+          
+            $token = md5(uniqid(rand(), true));
+            $qrcode_url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . $token;
             $stmt_insert->execute([
                 $pedidoId, 
                 $token, 
