@@ -6,10 +6,36 @@
     <meta name="description" content="Gestão de Eventos">
     <meta name="author" content="Quarto Periodo SI">
 
-    <title>Cadastro de Pedido</title>
-     <link rel="stylesheet" href="../styles/root.css">
-     <link rel="stylesheet" href="../styles/index.css">
-      <link rel="stylesheet" href="../styles/navbar.css">
+    <title class="title">Cadastro de Pedido</title>
+    <link rel="stylesheet" href="../../src/styles/reset.css">
+    <link rel="stylesheet" href="../../src/styles/root.css">
+    <link rel="stylesheet" href="../../src/styles/base.css">
+    <link rel="stylesheet" href="../../src/styles/global.css">
+    <link rel="stylesheet" href="../../src/styles/home.css">
+    <link rel="stylesheet" href="../../src/styles/index.css">
+    <link rel="stylesheet" href="../../src/styles/lista.css">
+    <link rel="stylesheet" href="../../src/styles/navbar.css">
+    <link rel="stylesheet" href="../../src/styles/components/button.css">
+    <link rel="stylesheet" href="../../src/styles/components/check.css">
+    <link rel="stylesheet" href="../../src/styles/components/form.css">
+    <link rel="stylesheet" href="../../src/styles/components/input.css">
+    <link rel="stylesheet" href="../../src/styles/components/link.css">
+    <link rel="stylesheet" href="../../src/styles/components/modal.css">
+    <link rel="stylesheet" href="../../src/styles/components/select.css">
+    <style>
+      .input {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+      .form-wrapper {
+        background-color: var(--white);
+        padding: 2rem;
+        border-radius: 0.8rem;
+        box-shadow: var(--shadow);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
        <div class="navbar"> 
@@ -44,8 +70,8 @@
     ?>
   <main class="main">
    <h1 class='title'>Cadastrar Pedido</h1>
-      <div>
-        <form class="form" action="novo_pedido.php" method="POST">
+      <div class="form-wrapper">
+        <form action="novo_pedido.php" method="POST">
          <div>
           <label for="cliente">Cliente</label>
             <select class="input" name="cliente" id="cliente" required>
