@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Gestão de Eventos">
+    <meta name="author" content="Quarto Periodo SI">
+
+
     <title>Cadastro de Usuários</title>
-    <link rel="stylesheet" href="../styles/cad.css" />
+     <link rel="stylesheet" href="../styles/root.css">
+     <link rel="stylesheet" href="../styles/index.css">
+     <link rel="stylesheet" href="../styles/navbar.css">
+     <link rel="stylesheet" href="../styles/lista.css">
+     <link rel="stylesheet" href="../styles/cad.css" />
+     <link rel="stylesheet" href="../styles/select.css" />
 </head>
-<body class="main">
+<body class="main">4
+    <div class="navbar"> 
+      <a href="../index.html">Inicio</a>
+      <a href="lista_usuario.php">Lista de Usuarios</a>
+    </div>
     <?php
 include "conecta.php";
 
@@ -36,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="text" name="nome" required class="input" placeholder="Digite o seu nome"><br><br>
 
     <label>Perfil:</label><br>
-    <select name="perfil" required>
+    <select class="select"> name="perfil" required>
         <option value="">Selecione</option>
         <option value="organizador">Organizador</option>
         <option value="bilheteria">Bilheteria</option>
@@ -46,13 +59,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </select><br><br>
 
     <label>Ativo:</label><br>
-    <select name="ativo">
+    <select class="select"> name="ativo">
         <option value="1">Sim</option>
         <option value="0">Não</option>
     </select><br><br>
 
     <label>Organização:</label><br>
-    <select name="organizacao_id" required>
+    <select class="select"> name="organizacao_id" required>
         <option value="">Selecione</option>
         <?php
         while ($org = mysqli_fetch_assoc($orgs)) {
@@ -65,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
 <br>
-<a href="lista_usuario.php" class="link">Ver usuários cadastrados</a>
 </body>
 </html>
 

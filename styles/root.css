@@ -105,6 +105,10 @@
   color: var(--green-100);
 }
 
+.select{
+
+}
+
 .input::placeholder {
   font-weight: bold;
   color: var(--white-100);
