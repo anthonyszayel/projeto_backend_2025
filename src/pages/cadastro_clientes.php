@@ -6,11 +6,23 @@
     <meta name="description" content="Gestão de Eventos">
     <meta name="author" content="Quarto Periodo SI">
 
-    <title>Cadastro de Clientes</title>
-     <link rel="stylesheet" href="../styles/root.css">
-     <link rel="stylesheet" href="../styles/index.css">
-     <link rel="stylesheet" href="../styles/navbar.css">
-      <link rel="stylesheet" href="../styles/lista.css">
+    <title class="title">Cadastro de Clientes</title>
+
+    <link rel="stylesheet" href="../../src/styles/reset.css">
+    <link rel="stylesheet" href="../../src/styles/root.css">
+    <link rel="stylesheet" href="../../src/styles/base.css">
+    <link rel="stylesheet" href="../../src/styles/global.css">
+    <link rel="stylesheet" href="../../src/styles/home.css">
+    <link rel="stylesheet" href="../../src/styles/index.css">
+    <link rel="stylesheet" href="../../src/styles/lista.css">
+    <link rel="stylesheet" href="../../src/styles/navbar.css">
+    <link rel="stylesheet" href="../../src/styles/components/button.css">
+    <link rel="stylesheet" href="../../src/styles/components/check.css">
+    <link rel="stylesheet" href="../../src/styles/components/form.css">
+    <link rel="stylesheet" href="../../src/styles/components/input.css">
+    <link rel="stylesheet" href="../../src/styles/components/link.css">
+    <link rel="stylesheet" href="../../src/styles/components/modal.css">
+    <link rel="stylesheet" href="../../src/styles/components/select.css">
 
   </head>
   <body>
@@ -22,7 +34,7 @@
     </div>
 
     <?php
-      require_once(__DIR__ . '/../conecta.php');
+       require_once __DIR__ . '/../../conecta.php'; 
       if(isset($_GET['opcao']))
       {
         if($_GET['opcao']=='e')
