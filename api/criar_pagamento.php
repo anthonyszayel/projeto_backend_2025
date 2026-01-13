@@ -31,9 +31,13 @@ try {
 
     if (!$pedido) {
         throw new Exception('Pedido não encontrado');
+    if (!$pedido) {
+        throw new Exception('Pedido não encontrado');
     }
 
     $total = (float)$pedido['total_liquido'];
+    $total = (float)$pedido['total_liquido'];
+
 
 
     $client = new PreferenceClient();
