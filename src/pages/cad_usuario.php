@@ -1,8 +1,8 @@
 <?php
-include "conecta.php";
+include "../../conecta.php";
 
 
-$orgs = mysqli_query($conn, "SELECT id, nome FROM organizacao");
+$orgs = mysqli_query($bancodedados, "SELECT id, nome FROM organizacao");
 
 $msg = "";
 
@@ -29,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Cadastro de Usuário</title>
 
-    <link rel="stylesheet" href="../src/styles/global.css">
-    <link rel="stylesheet" href="../src/styles/index.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/index.css">
 
     <link
       rel="stylesheet"
@@ -57,11 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </header>
 
         <div class="modal-content">
-            <a href="../index.html" class="button">Início</a>
+            <a href="../../index.html" class="button">Início</a>
             <a href="lista_usuario.php" class="button">Listar Usuários</a>
             <a href="cad_organizacao.php" class="button">Cadastrar Organização</a>
             <a href="cad_local.php" class="button">Cadastrar Local</a>
-            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+            <a href="./auth/auth.html" class="link">Sair</a>
         </div>
     </div>
 </div>
@@ -121,6 +121,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </main>
 
-<script src="../src/scripts/index.js"></script>
+<script src="../scripts/index.js"></script>
 </body>
 </html>

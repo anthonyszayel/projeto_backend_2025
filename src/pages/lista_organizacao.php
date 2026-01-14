@@ -1,18 +1,18 @@
 <?php
-include "conecta.php";
+include "../../conecta.php";
 
-$sql = "SELECT id, nome, created_at FROM usuario";
-$result = mysqli_query($conn, $sql);
+$sql = "SELECT id, nome, contato, created_at FROM organizacao";
+$result = mysqli_query($bancodedados, $sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Usuários</title>
+    <title>Lista de Organizações</title>
 
-    <link rel="stylesheet" href="../src/styles/global.css">
-    <link rel="stylesheet" href="../src/styles/index.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/index.css">
 
     <link
       rel="stylesheet"
@@ -28,7 +28,7 @@ $result = mysqli_query($conn, $sql);
 
 
 <header class="header">
-    <h1 class="title">Usuários Cadastrados</h1>
+    <h1 class="title">Organizações Cadastradas</h1>
     <i class="ph ph-list" id="openModal"></i>
 </header>
 
@@ -40,11 +40,11 @@ $result = mysqli_query($conn, $sql);
         </header>
 
         <div class="modal-content">
-            <a href="../index.html" class="button">Início</a>
-            <a href="cad_usuario.php" class="button">Cadastrar Usuário</a>
-            <a href="lista_organizacao.php" class="button">Organizações</a>
+            <a href="../../index.html" class="button">Início</a>
+            <a href="cad_organizacao.php" class="button">Cadastrar Organização</a>
+            <a href="lista_usuario.php" class="button">Usuários</a>
             <a href="lista_local.php" class="button">Locais</a>
-            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+            <a href="./auth/auth.html" class="link">Sair</a>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@ $result = mysqli_query($conn, $sql);
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Email</th>
+                <th>Contato</th>
                 <th>Data de Cadastro</th>
             </tr>
         </thead>
@@ -68,7 +68,7 @@ $result = mysqli_query($conn, $sql);
                 <tr>
                     <td><?= $row["id"] ?></td>
                     <td><?= $row["nome"] ?></td>
-                    <td><?= $row["email"] ?></td>
+                    <td><?= $row["contato"] ?></td>
                     <td><?= date("d/m/Y H:i", strtotime($row["created_at"])) ?></td>
                 </tr>
             <?php endwhile; ?>
@@ -76,11 +76,11 @@ $result = mysqli_query($conn, $sql);
     </table>
 
 <?php else: ?>
-    <p class="msg">Nenhum usuário cadastrado.</p>
+    <p class="msg">Nenhuma organização cadastrada.</p>
 <?php endif; ?>
 
 </main>
 
-<script src="../src/scripts/index.js"></script>
+<script src="../scripts/index.js"></script>
 </body>
 </html>

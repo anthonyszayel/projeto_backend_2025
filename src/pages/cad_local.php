@@ -1,5 +1,5 @@
 <?php
-include "conecta.php";
+include "../../conecta.php";
 
 $msg = "";
 
@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO local (endereco, capacidade_total)
             VALUES ('$endereco', '$capacidade')";
 
-    if (mysqli_query($conn, $sql)) {
+    if (mysqli_query($bancodedados, $sql)) {
         $msg = "Local cadastrado com sucesso!";
     } else {
         $msg = "Erro ao cadastrar local.";
@@ -24,8 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Cadastro de Local</title>
 
-    <link rel="stylesheet" href="../src/styles/global.css">
-    <link rel="stylesheet" href="../src/styles/index.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/index.css">
 
     <link
       rel="stylesheet"
@@ -53,11 +53,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </header>
 
         <div class="modal-content">
-            <a href="../index.html" class="button">Início</a>
+            <a href="../../index.html" class="button">Início</a>
             <a href="lista_local.php" class="button">Listar Locais</a>
             <a href="cad_usuario.php" class="button">Cadastrar Usuário</a>
             <a href="cad_organizacao.php" class="button">Cadastrar Organização</a>
-            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+            <a href="./auth/auth.html" class="link">Sair</a>
+        
         </div>
     </div>
 </div>
@@ -94,6 +95,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </main>
 
-<script src="../src/scripts/index.js"></script>
+<script src="../scripts/index.js"></script>
 </body>
 </html>
