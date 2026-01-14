@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Organização</title>
-    <link rel="stylesheet" href="../styles/cad.css" />
-</head>
-<body class="main">
 <?php
 include "conecta.php";
 
+/* Inserção da organização */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $contato = $_POST["contato"];
@@ -18,21 +10,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$nome', '$contato')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<p><strong>Organização cadastrada com sucesso!</strong></p>";
+        $mensagem = "Organização cadastrada com sucesso!";
     } else {
-        echo "<p>Erro ao cadastrar organização.</p>";
+        $mensagem = "Erro ao cadastrar organização.";
     }
 }
 ?>
 
-<h2 class="title">Cadastro de Organização</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestão de Eventos">
+    <meta name="author" content="Quarto Período SI">
 
-<form method="post" class="form">
-    <label>Nome da Organização:</label><br>
-    <input type="text" name="nome" required><br><br>
+    <title>Cadastro de Organização</title>
 
-    <label>Contato:</label><br>
-    <input type="text" name="contato"><br><br>
+    <link rel="stylesheet" href="../styles/root.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/lista.css">
+    <link rel="stylesheet" href="../styles/cad.css">
+</head>
 
-    <button type="submit" class="button">Cadastrar</button>
-</form>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="../index.html">Início</a>
+    <a href="lista_organizacao.php">Lista de Organizações</a>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="main">
+
+    <h2 class="title">Cadastro de Organização</h2>
+
+    <?php if (!empty($mensagem)) : ?>
+        <p class="msg"><strong><?= $mensagem ?></strong></p>
+    <?php endif; ?>
+
+    <form method="post" class="form">
+
+        <label class="label">Nome da Organização</label>
+        <input
+            type="text"
+            name="nome"
+            class="input"
+            placeholder="Digite o nome da organização"
+            required
+        >
+
+        <label class="label">Contato</label>
+        <input
+            type="text"
+            name="contato"
+            class="input"
+            placeholder="Telefone, e-mail ou responsável"
+        >
+
+        <button type="submit" class="button">
+            Cadastrar
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

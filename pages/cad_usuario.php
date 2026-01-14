@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuários</title>
-    <link rel="stylesheet" href="../styles/cad.css" />
-</head>
-<body class="main">
-    <?php
+<?php
 include "conecta.php";
 
+/* Buscar organizações para o select */
 $orgs = mysqli_query($conn, "SELECT id, nome FROM organizacao");
 
+/* Inserção do usuário */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $perfil = $_POST["perfil"];
@@ -22,51 +15,92 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$nome', '$perfil', '$ativo', '$organizacao_id')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<p><strong>Usuário cadastrado com sucesso!</strong></p>";
+        $mensagem = "Usuário cadastrado com sucesso!";
     } else {
-        echo "<p>Erro ao cadastrar usuário.</p>";
+        $mensagem = "Erro ao cadastrar usuário.";
     }
 }
 ?>
 
-<h2 class="title">Cadastro de Usuário</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Gestão de Eventos">
+    <meta name="author" content="Quarto Período SI">
 
-<form method="post" class="form">
-    <label>Nome:</label><br>
-    <input type="text" name="nome" required class="input" placeholder="Digite o seu nome"><br><br>
+    <title>Cadastro de Usuário</title>
 
-    <label>Perfil:</label><br>
-    <select name="perfil" required>
-        <option value="">Selecione</option>
-        <option value="organizador">Organizador</option>
-        <option value="bilheteria">Bilheteria</option>
-        <option value="financeiro">Financeiro</option>
-        <option value="portaria">Portaria</option>
-        <option value="admin">Admin</option>
-    </select><br><br>
+    <link rel="stylesheet" href="../styles/root.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/lista.css">
+    <link rel="stylesheet" href="../styles/cad.css">
+    <link rel="stylesheet" href="../styles/select.css">
+</head>
 
-    <label>Ativo:</label><br>
-    <select name="ativo">
-        <option value="1">Sim</option>
-        <option value="0">Não</option>
-    </select><br><br>
+<body>
 
-    <label>Organização:</label><br>
-    <select name="organizacao_id" required>
-        <option value="">Selecione</option>
-        <?php
-        while ($org = mysqli_fetch_assoc($orgs)) {
-            echo "<option value='".$org["id"]."'>".$org["nome"]."</option>";
-        }
-        ?>
-    </select><br><br>
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="../index.html">Início</a>
+    <a href="lista_usuario.php">Lista de Usuários</a>
+</div>
 
-    <button type="submit" class="button">Cadastrar</button>
-</form>
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="main">
 
-<br>
-<a href="lista_usuario.php" class="link">Ver usuários cadastrados</a>
+    <h2 class="title">Cadastro de Usuário</h2>
+
+    <?php if (!empty($mensagem)) : ?>
+        <p class="msg"><strong><?= $mensagem ?></strong></p>
+    <?php endif; ?>
+
+    <form method="post" class="form">
+
+        <label class="label">Nome</label>
+        <input
+            type="text"
+            name="nome"
+            class="input"
+            placeholder="Digite o nome do usuário"
+            required
+        >
+
+        <label class="label">Perfil</label>
+        <select name="perfil" class="select" required>
+            <option value="">Selecione</option>
+            <option value="organizador">Organizador</option>
+            <option value="bilheteria">Bilheteria</option>
+            <option value="financeiro">Financeiro</option>
+            <option value="portaria">Portaria</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <label class="label">Ativo</label>
+        <select name="ativo" class="select">
+            <option value="1">Sim</option>
+            <option value="0">Não</option>
+        </select>
+
+        <label class="label">Organização</label>
+        <select name="organizacao_id" class="select" required>
+            <option value="">Selecione</option>
+            <?php while ($org = mysqli_fetch_assoc($orgs)) : ?>
+                <option value="<?= $org['id']; ?>">
+                    <?= $org['nome']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <button type="submit" class="button">
+            Cadastrar
+        </button>
+
+    </form>
+
+</div>
+
 </body>
 </html>
-
-

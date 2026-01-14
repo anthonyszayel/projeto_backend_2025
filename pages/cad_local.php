@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Local</title>
-    <link rel="stylesheet" href="../styles/cad.css" />
-</head>
-<body class="main">
 <?php
 include "conecta.php";
 
+/* Buscar organizações */
 $orgs = mysqli_query($conn, "SELECT id, nome FROM organizacao");
 
+/* Inserção do local */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $endereco = $_POST["endereco"];
@@ -22,38 +15,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$nome', '$endereco', '$capacidade', '$organizacao_id')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<p><strong>Local cadastrado com sucesso!</strong></p>";
+        $mensagem = "Local cadastrado com sucesso!";
     } else {
-        echo "<p>Erro ao cadastrar local.</p>";
+        $mensagem = "Erro ao cadastrar local.";
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestão de Eventos">
+    <meta name="author" content="Quarto Período SI">
 
-<h2 class="title">Cadastro de Local</h2>
+    <title>Cadastro de Local</title>
 
-<form method="post" class="form">
-    <label>Nome do Local:</label>
-    <input type="text" name="nome" required class="input" placeholder="Digite o local do evento"><br><br>
+    <link rel="stylesheet" href="../styles/root.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/lista.css">
+    <link rel="stylesheet" href="../styles/cad.css">
+</head>
 
-    <label>Endereço:</label><br>
-    <input type="text" name="endereco" required class="input" placeholder="Digite o endereço"><br><br>
+<body>
 
-    <label>Capacidade:</label><br>
-    <input type="number" name="capacidade" required class="input" placeholder="Digite a capacidade"><br><br>
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="../index.html">Início</a>
+    <a href="lista_local.php">Lista de Locais</a>
+</div>
 
-    <label>Organização:</label><br>
-    <select name="organizacao_id" required>
-        <option value="">Selecione</option>
-        <?php
-        while ($org = mysqli_fetch_assoc($orgs)) {
-            echo "<option value='".$org["id"]."'>".$org["nome"]."</option>";
-        }
-        ?>
-    </select><br><br>
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="main">
 
-    <button type="submit" class="button">Cadastrar</button>
-</form>
+    <h2 class="title">Cadastro de Local</h2>
 
-<br>
-<a href="lista_usuario.php" class="link">Ver locais cadastrados</a>
+    <?php if (!empty($mensagem)) : ?>
+        <p class="msg"><strong><?= $mensagem ?></strong></p>
+    <?php endif; ?>
+
+    <form method="post" class="form">
+
+        <label class="label">Nome do Local</label>
+        <input
+            type="text"
+            name="nome"
+            class="input"
+            placeholder="Digite o nome do local"
+            required
+        >
+
+        <label class="label">Endereço</label>
+        <input
+            type="text"
+            name="endereco"
+            class="input"
+            placeholder="Digite o endereço"
+            required
+        >
+
+        <label class="label">Capacidade</label>
+        <input
+            type="number"
+            name="capacidade"
+            class="input"
+            placeholder="Digite a capacidade"
+            required
+        >
+
+        <label class="label">Organização</label>
+        <select name="organizacao_id" class="input" required>
+            <option value="">Selecione</option>
+            <?php while ($org = mysqli_fetch_assoc($orgs)) : ?>
+                <option value="<?= $org['id'] ?>">
+                    <?= $org['nome'] ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <button type="submit" class="button">
+            Cadastrar
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
