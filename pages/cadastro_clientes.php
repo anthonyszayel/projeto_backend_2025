@@ -13,7 +13,7 @@
   </head>
   <body>
       <div class="navbar"> 
-      <a href="../index.html">Inicio</a> 
+      <a href="../index.html">Inici</a> 
       <a href="novo_pedido.php">Novo Pedido</a> 
       <a href="todos_pedidos.php">Todos os Pedidos</a>
       <a href="clientes_cadastrados.php">Clientes Cadastrados</a>
