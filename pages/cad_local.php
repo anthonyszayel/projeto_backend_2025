@@ -1,23 +1,19 @@
 <?php
 include "conecta.php";
 
-/* Buscar organizações */
-$orgs = mysqli_query($conn, "SELECT id, nome FROM organizacao");
+$msg = "";
 
-/* Inserção do local */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST["nome"];
     $endereco = $_POST["endereco"];
-    $capacidade = $_POST["capacidade"];
-    $organizacao_id = $_POST["organizacao_id"];
+    $capacidade = $_POST["capacidade_total"];
 
-    $sql = "INSERT INTO local_evento (nome, endereco, capacidade, organizacao_id)
-            VALUES ('$nome', '$endereco', '$capacidade', '$organizacao_id')";
+    $sql = "INSERT INTO local (endereco, capacidade_total)
+            VALUES ('$endereco', '$capacidade')";
 
     if (mysqli_query($conn, $sql)) {
-        $mensagem = "Local cadastrado com sucesso!";
+        $msg = "Local cadastrado com sucesso!";
     } else {
-        $mensagem = "Erro ao cadastrar local.";
+        $msg = "Erro ao cadastrar local.";
     }
 }
 ?>
@@ -26,82 +22,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestão de Eventos">
-    <meta name="author" content="Quarto Período SI">
-
     <title>Cadastro de Local</title>
 
-    <link rel="stylesheet" href="../styles/root.css">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="../styles/navbar.css">
-    <link rel="stylesheet" href="../styles/lista.css">
-    <link rel="stylesheet" href="../styles/cad.css">
+    <link rel="stylesheet" href="../src/styles/global.css">
+    <link rel="stylesheet" href="../src/styles/index.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <a href="../index.html">Início</a>
-    <a href="lista_local.php">Lista de Locais</a>
+
+<header class="header">
+    <h1 class="title">Cadastro de Local</h1>
+    <i class="ph ph-list" id="openModal"></i>
+</header>
+
+
+<div class="modal-wrapper" id="termsModal">
+    <div class="modal main-modal">
+        <header class="modal-header">
+            <h2 class="modal-title">Menu</h2>
+        </header>
+
+        <div class="modal-content">
+            <a href="../index.html" class="button">Início</a>
+            <a href="lista_local.php" class="button">Listar Locais</a>
+            <a href="cad_usuario.php" class="button">Cadastrar Usuário</a>
+            <a href="cad_organizacao.php" class="button">Cadastrar Organização</a>
+            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+        </div>
+    </div>
 </div>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<div class="main">
 
-    <h2 class="title">Cadastro de Local</h2>
+<main class="main">
 
-    <?php if (!empty($mensagem)) : ?>
-        <p class="msg"><strong><?= $mensagem ?></strong></p>
+    <?php if ($msg): ?>
+        <p class="msg"><?= $msg ?></p>
     <?php endif; ?>
 
     <form method="post" class="form">
 
-        <label class="label">Nome do Local</label>
-        <input
-            type="text"
-            name="nome"
-            class="input"
-            placeholder="Digite o nome do local"
-            required
-        >
-
-        <label class="label">Endereço</label>
         <input
             type="text"
             name="endereco"
             class="input"
-            placeholder="Digite o endereço"
+            placeholder="Endereço do local"
             required
         >
 
-        <label class="label">Capacidade</label>
         <input
             type="number"
-            name="capacidade"
+            name="capacidade_total"
             class="input"
-            placeholder="Digite a capacidade"
+            placeholder="Capacidade total"
             required
         >
 
-        <label class="label">Organização</label>
-        <select name="organizacao_id" class="input" required>
-            <option value="">Selecione</option>
-            <?php while ($org = mysqli_fetch_assoc($orgs)) : ?>
-                <option value="<?= $org['id'] ?>">
-                    <?= $org['nome'] ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
-
         <button type="submit" class="button">
-            Cadastrar
+            Cadastrar Local
         </button>
 
     </form>
+</main>
 
-</div>
-
+<script src="../src/scripts/index.js"></script>
 </body>
 </html>

@@ -1,10 +1,7 @@
 <?php
 include "conecta.php";
 
-$sql = "SELECT u.id, u.nome, u.perfil, u.ativo, o.nome AS organizacao
-        FROM usuario u
-        JOIN organizacao o ON u.organizacao_id = o.id";
-
+$sql = "SELECT id, nome, created_at FROM usuario";
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -12,65 +9,78 @@ $result = mysqli_query($conn, $sql);
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestão de Eventos">
-    <meta name="author" content="Quarto Período SI">
-
     <title>Lista de Usuários</title>
 
-    <link rel="stylesheet" href="../styles/root.css">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="../styles/navbar.css">
-    <link rel="stylesheet" href="../styles/lista.css">
+    <link rel="stylesheet" href="../src/styles/global.css">
+    <link rel="stylesheet" href="../src/styles/index.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <a href="../index.html">Início</a>
-    <a href="cad_usuario.php">Cadastrar Usuário</a>
+
+<header class="header">
+    <h1 class="title">Usuários Cadastrados</h1>
+    <i class="ph ph-list" id="openModal"></i>
+</header>
+
+
+<div class="modal-wrapper" id="termsModal">
+    <div class="modal main-modal">
+        <header class="modal-header">
+            <h2 class="modal-title">Menu</h2>
+        </header>
+
+        <div class="modal-content">
+            <a href="../index.html" class="button">Início</a>
+            <a href="cad_usuario.php" class="button">Cadastrar Usuário</a>
+            <a href="lista_organizacao.php" class="button">Organizações</a>
+            <a href="lista_local.php" class="button">Locais</a>
+            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+        </div>
+    </div>
 </div>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<div class="main">
 
-    <h2 class="title">Usuários Cadastrados</h2>
+<main class="main">
+
+<?php if (mysqli_num_rows($result) > 0): ?>
 
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Perfil</th>
-                <th>Ativo</th>
-                <th>Organização</th>
+                <th>Email</th>
+                <th>Data de Cadastro</th>
             </tr>
         </thead>
         <tbody>
-            <?php if (mysqli_num_rows($result) > 0): ?>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                    <tr>
-                        <td><?= $row['id'] ?></td>
-                        <td><?= $row['nome'] ?></td>
-                        <td><?= ucfirst($row['perfil']) ?></td>
-                        <td><?= $row['ativo'] ? 'Sim' : 'Não' ?></td>
-                        <td><?= $row['organizacao'] ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                    <td colspan="5">Nenhum usuário cadastrado.</td>
+                    <td><?= $row["id"] ?></td>
+                    <td><?= $row["nome"] ?></td>
+                    <td><?= $row["email"] ?></td>
+                    <td><?= date("d/m/Y H:i", strtotime($row["created_at"])) ?></td>
                 </tr>
-            <?php endif; ?>
+            <?php endwhile; ?>
         </tbody>
     </table>
 
-    <a href="cad_usuario.php" class="button">
-        Cadastrar novo usuário
-    </a>
+<?php else: ?>
+    <p class="msg">Nenhum usuário cadastrado.</p>
+<?php endif; ?>
 
-</div>
+</main>
 
+<script src="../src/scripts/index.js"></script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 <?php
 include "conecta.php";
 
-/* Inserção da organização */
+$msg = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $contato = $_POST["contato"];
@@ -10,9 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$nome', '$contato')";
 
     if (mysqli_query($conn, $sql)) {
-        $mensagem = "Organização cadastrada com sucesso!";
+        $msg = "Organização cadastrada com sucesso!";
     } else {
-        $mensagem = "Erro ao cadastrar organização.";
+        $msg = "Erro ao cadastrar organização.";
     }
 }
 ?>
@@ -21,62 +22,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestão de Eventos">
-    <meta name="author" content="Quarto Período SI">
-
     <title>Cadastro de Organização</title>
 
-    <link rel="stylesheet" href="../styles/root.css">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="../styles/navbar.css">
-    <link rel="stylesheet" href="../styles/lista.css">
-    <link rel="stylesheet" href="../styles/cad.css">
+    <link rel="stylesheet" href="../src/styles/global.css">
+    <link rel="stylesheet" href="../src/styles/index.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <a href="../index.html">Início</a>
-    <a href="lista_organizacao.php">Lista de Organizações</a>
+
+<header class="header">
+    <h1 class="title">Cadastro de Organização</h1>
+    <i class="ph ph-list" id="openModal"></i>
+</header>
+
+
+<div class="modal-wrapper" id="termsModal">
+    <div class="modal main-modal">
+        <header class="modal-header">
+            <h2 class="modal-title">Menu</h2>
+        </header>
+
+        <div class="modal-content">
+            <a href="../index.html" class="button">Início</a>
+            <a href="lista_organizacao.php" class="button">Listar Organizações</a>
+            <a href="cad_usuario.php" class="button">Cadastrar Usuário</a>
+            <a href="cad_local.php" class="button">Cadastrar Local</a>
+            <a href="../src/pages/auth/auth.html" class="link">Sair</a>
+        </div>
+    </div>
 </div>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<div class="main">
 
-    <h2 class="title">Cadastro de Organização</h2>
+<main class="main">
 
-    <?php if (!empty($mensagem)) : ?>
-        <p class="msg"><strong><?= $mensagem ?></strong></p>
+    <?php if ($msg): ?>
+        <p class="msg"><?= $msg ?></p>
     <?php endif; ?>
 
     <form method="post" class="form">
 
-        <label class="label">Nome da Organização</label>
         <input
             type="text"
             name="nome"
             class="input"
-            placeholder="Digite o nome da organização"
+            placeholder="Nome da organização"
             required
         >
 
-        <label class="label">Contato</label>
         <input
             type="text"
             name="contato"
             class="input"
-            placeholder="Telefone, e-mail ou responsável"
+            placeholder="Contato (email ou telefone)"
         >
 
         <button type="submit" class="button">
-            Cadastrar
+            Cadastrar Organização
         </button>
 
     </form>
+</main>
 
-</div>
-
+<script src="../src/scripts/index.js"></script>
 </body>
 </html>
