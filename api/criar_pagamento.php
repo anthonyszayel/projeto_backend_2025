@@ -46,8 +46,8 @@ try {
         ],
         "external_reference" => (string)$pedido_id,
         "back_urls" => [
-            "success" => "http://localhost/projeto_backend_2025/pages/sucesso.php",
-            "failure" => "http://localhost/projeto_backend_2025/pages/erro.php",
+            "success" => "https://eventos.predicoes.com.br/src/pages/sucesso.php?pedido_id={$pedido_id}",
+            "failure" => "https://eventos.predicoes.com.br/src/pages/erro.php?pedido_id={$pedido_id}",
         ]
     ]);
 

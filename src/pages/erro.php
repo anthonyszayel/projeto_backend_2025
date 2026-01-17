@@ -10,7 +10,7 @@ $pedido_id = $_GET['pedido_id'] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Aprovado | IF Ticket</title>
+    <title>Erro no Pagamento | IF Ticket</title>
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/pages/index.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -24,7 +24,7 @@ $pedido_id = $_GET['pedido_id'] ?? null;
     <main class="main" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         
         <h1 class="title">
-            PAGAMENTO <span class="contrast">APROVADO</span>
+            PAGAMENTO <span class="contrast">RECUSADO</span>
         </h1>
 
         <div class="form" style="width: 40rem; text-align: center;">
@@ -33,11 +33,11 @@ $pedido_id = $_GET['pedido_id'] ?? null;
             </p>
             
             <p style="color: var(--color-gray-200); font-size: 1.4rem; margin-bottom: 1rem;">
-                Seu ingresso foi gerado com sucesso e já está disponível.
+                Não foi possível processar o seu pagamento. Por favor, tente novamente.
             </p>
 
-            <a href="meus_ingressos.php?pedido_id=<?= $pedido_id ?>" class="button" style="text-decoration: none; width: 100%;">
-                <i class="ph-fill ph-ticket" style="margin-right: 1rem;"></i> Ver Ingressos
+            <a href="comprar.php" class="button" style="text-decoration: none; width: 100%;">
+                <i class="ph-fill ph-arrow-counter-clockwise" style="margin-right: 1rem;"></i> Tentar Novamente
             </a>
         </div>
 
