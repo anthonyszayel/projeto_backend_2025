@@ -19,7 +19,7 @@ $db = $conexao->getConexao();
 try {
     $db->beginTransaction();
 
-    // 1. Verifica dispositivo
+    
     $stmt_disp = $db->prepare("SELECT id FROM dispositivo_checkin WHERE uuid = ?");
     $stmt_disp->execute([$dispositivo_uuid]);
     $disp_data = $stmt_disp->fetch(PDO::FETCH_ASSOC);
@@ -31,7 +31,7 @@ try {
         $dispositivo_db_id = $db->lastInsertId();
     }
 
-    // 2. Busca ingresso
+    
     $stmt = $db->prepare("
         SELECT i.id as ingresso_id, i.status, i.titular_nome, i.titular_documento, e.nome AS evento_nome
         FROM ingresso i
@@ -56,7 +56,7 @@ try {
     $status_resposta = '';
     $mensagem = '';
 
-    // 3. Lógica de Status (Correção aqui: removido o UPDATE na tabela ingresso)
+    
     if ($ingresso['status'] === 'utilizado') {
         $tentativa_duplicada = true;
         $mensagem = 'ATENÇÃO: Ingresso já utilizado anteriormente!';
@@ -73,7 +73,7 @@ try {
         $status_resposta = 'invalido';
     }
 
-    // 4. Grava Log na tabela checkin (Onde a coluna tentativa_duplicada realmente existe)
+    
     if ($status_resposta === 'sucesso' || $status_resposta === 'utilizado') {
         $stmt_checkin = $db->prepare("
             INSERT INTO checkin (ingresso_id, dispositivo_id, data_hora, tentativa_duplicada)
@@ -102,7 +102,6 @@ try {
     
 } catch (Exception $e) {
     if ($db->inTransaction()) $db->rollBack();
-    // Exibe o erro real no card para facilitar o seu ajuste no banco
     echo json_encode(['status' => 'erro', 'mensagem' => 'Erro no Banco: ' . $e->getMessage()]);
 }
 ?>
