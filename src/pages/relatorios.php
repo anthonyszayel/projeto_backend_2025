@@ -9,11 +9,11 @@
 
     <title>Relatórios</title>
 
-     <link rel="stylesheet" href="..\styles\global.css" />
-     <link rel="stylesheet" href="..\styles\components\input.css" />
-     <link rel="stylesheet" href="..\styles\components\select.css" />
-     <link rel="stylesheet" href="..\styles\lista_new.css" />
-     <link rel="stylesheet" href="..\styles\texto.css" />
+<link rel="stylesheet" href="../styles/global.css" />
+     <link rel="stylesheet" href="../styles/components/input.css" />
+     <link rel="stylesheet" href="../styles/components/select.css" />
+     <link rel="stylesheet" href="../styles/lista_new.css" />
+     <link rel="stylesheet" href="../styles/texto.css" />
 
      
   </head>

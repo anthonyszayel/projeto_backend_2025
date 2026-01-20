@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="utf-8">
   <title>Compra</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="styles/auth_new.css" rel="stylesheet">
+  <link href="src/styles/auth_new.css" rel="stylesheet">
 </head>
 <body>
 

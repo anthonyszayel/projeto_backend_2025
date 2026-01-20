@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<link rel="stylesheet" href="../styles/lista.css"/>
 	<link rel="stylesheet" href="../styles/index.css"/>
 	<link rel="stylesheet" href="../styles/navbar.css"/>
-  <link rel="stylesheet" href="..\styles\texto.css" />
+  <link rel="stylesheet" href="../styles/texto.css" />
 </head>
 <body>
 <main class="main">

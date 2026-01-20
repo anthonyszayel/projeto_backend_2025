@@ -7,7 +7,7 @@
     <meta name="author" content="Quarto Periodo SI">
 
     <title>Cadastro de Clientes</title>
-     <link rel="stylesheet" href="../styles/global.css">
+     <link rel="stylesheet" href="src/styles/global.css">
    
 
   </head>

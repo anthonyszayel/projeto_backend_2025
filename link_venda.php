@@ -11,7 +11,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     
-    <link href="styles/auth.css" rel="stylesheet">
+    <link href="src/styles/auth.css" rel="stylesheet">
 	
 	<style>
 	
