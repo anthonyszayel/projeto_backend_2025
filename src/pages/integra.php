@@ -24,7 +24,7 @@
 <body>
 
 <header class="header">
-    <h1 class="title">Menu</h1>
+    <h1 class="title">Gerenciador do Organizador</h1>
 </header>
 
 <main class="main">
@@ -32,6 +32,9 @@
     <div class="menu-buttons">
         <a href="relatorios.php" class="button">Relatórios</a>
         <a href="controle_comissarios.php" class="button">Controle de Comissionários</a>
+        <a href="lista_local.php" class="button">Locais Cadastrados</a>
+        <a href="lista_usuario.php" class="button">Usuários Cadastrados</a>
+        <a href="lista_organizacao.php" class="button">Organizações Cadastrados</a>
     </div>
 
 </main>
